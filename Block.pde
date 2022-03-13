@@ -12,8 +12,8 @@ class Block {
 
   void update() {
     x = floor(map(mouseX, 0, width, 0, 12));
-    x = constrain(x, 0, 12);
-    y = constrain(y, 0, 17);
+    x = constrain(x, 1, 10);
+    y = constrain(y, 1, 17);
     updateCells();
   }
 
