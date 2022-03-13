@@ -48,7 +48,7 @@ void setup() {
     border[i+52] = 252+i;
   }
   int a = 1;
-  for (int i = 0; i < 52; i+=2) {
+  for (int i = 0; i < 42; i+=2) {
     if (border[i+12] == 0)
       border[i+12] = 12*a;
     if (border[i+11] == 0)
