@@ -41,45 +41,33 @@ void setup() {
   GREEN = SBLOCK.c;
   PURPLE = TBLOCK.c;
   RED = ZBLOCK.c;
+  
+  //Border Cells
+  int[] border = new int[64];
+  for (int i = 0; i < 12; i++) {
+    border[i] = i;
+    border[i+52] = 252+i;
+  }
+  int a = 1;
+  for (int i = 0; i < 52; i+=2) {
+    if (border[i+12] == 0)
+      border[i+12] = 12*a;
+    if (border[i+11] == 0)
+      border[i+11] = 12*a-1;
+    a++;
+  }
 
   //Create Cells
   for (int y = 0; y < screenHeight; y++) {
     for (int x = 0; x<12; x++) {
-      cells[x+y*12] = new Cell(x, y);
+      int index = x+y*12;
+      cells[index] = new Cell(x, y);
+      for (int i : border) {
+        if (index == i) 
+          cells[index].type = BORDER;
+      }
     }
   }
-
-  //Border Cells
-  for (int x = 0; x < 12; x++) {
-    cells[x].type = BORDER;
-    cells[x+12*screenHeight-12].type = BORDER;
-  }
-  for (int y = 0; y < 22; y++) {
-    cells[y*12].type = BORDER;
-    cells[11+y*12].type = BORDER;
-  }
-
-  int count = 0;
-  for (int i = 0; i < cells.length; i++) {
-    if (cells[i].type == BORDER) {
-      border[count] = i;
-      count++;
-    }
-  }
-  int[] temp = new int[64];
-  int a = 1;
-  for (int i = 0; i < 12; i++) {
-    temp[i] = i;
-    temp[i+52] = 252+i;
-  }
-  for (int i = 0; i < 52; i+=2) {
-    if (temp[i+12] == 0)
-      temp[i+12] = 12*a;
-    if (temp[i+11] == 0)
-      temp[i+11] = 12*a-1;
-    a++;
-  }
-  printArray(temp);
 
   blocks[0] = new IBlock(6, 1);
   //blocks[1] = new JBlock(40, 300);
