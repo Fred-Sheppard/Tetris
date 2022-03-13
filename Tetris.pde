@@ -1,4 +1,7 @@
-Block[] blocks = new Block[7]; //<>//
+//Maxrotation can go //<>//
+//Add rotation logic to IBLOCK
+
+Block[] blocks = new Block[7];
 Cell[] cells;
 int[] border;
 
@@ -60,7 +63,7 @@ void setup() {
   for (int y = 0; y < screenHeight; y++) {
     for (int x = 0; x<12; x++) {
       int index = x+y*12;
-      cells[index] = new Cell(x, y);
+      cells[index] = new Cell(x, y, index);
       for (int i : border) {
         if (index == i)
           cells[index].type = BORDER;
@@ -68,7 +71,7 @@ void setup() {
     }
   }
 
-  blocks[0] = new IBlock(6, 1);
+  blocks[0] = new JBlock(6, 1);
   //blocks[1] = new JBlock(40, 300);
   //blocks[2] = new LBlock(40, 450);
   //blocks[3] = new OBlock(40, 600);
@@ -90,12 +93,14 @@ void draw() {
     b.y++;
   }
   b.update();
+  //cells[b.x +b.y*12].type = OBLOCK;
   for (Cell c : cells) {
     c.display();
   }
 }
 
 void mousePressed() {
+  blocks[0].rotate();
 }
 
 void keyPressed() {

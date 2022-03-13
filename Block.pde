@@ -12,8 +12,8 @@ class Block {
 
   void update() {
     x = floor(map(mouseX, 0, width, 0, 12));
-    x = constrain(x, 1, 10);
-    y = constrain(y, 1, 17);
+    //x = constrain(x, 1, 10);
+    //y = constrain(y, 1, 17);
     updateCells();
   }
 
@@ -22,104 +22,94 @@ class Block {
 
   void display() {
   }
+
+  void rotate() {
+    rotation++;
+    if (rotation > maxRotation)
+      rotation = 0;
+  }
 }
 
 class IBlock extends Block {
 
   IBlock(int x, int y) {
     super(x, y);
-    maxRotation = 3;
+    maxRotation = 1;
   }
 
   void updateCells() {
-    for (int i = 0; i < 4; i++) {
-      cells[floor(x+12*(y+i))].type=IBLOCK;
-    }
-  }
-
-  void display() {
-
-    fill(255);
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        rect(x+i*size, y+j*size, size, size);
-      }
-    }
-    fill(LBLUE);
-    switch (rotation) {
+    switch(rotation) {
     case 0:
+      x = constrain(x, 2, 8);
+      y = constrain(y, 1, 19);
+      int index = x+y*12;
       for (int i = 0; i < 4; i++) {
-        rect(x + i*size, y+size, size, size);
+        cells[index+11 +i].type = IBLOCK;
       }
       break;
 
     case 1:
+      x = constrain(x, 1, 10);
+      y = constrain(y, 1, 17);
+      index = x+y*12;
       for (int i = 0; i < 4; i++) {
-        rect(x+2*size, y + size*i, size, size);
+        cells[index +12*i].type = IBLOCK;
+      }
+    }
+  }
+}
+
+class JBlock extends Block {
+
+  JBlock(int x, int y) {
+    super(x, y);
+    maxRotation = 3;
+  }
+
+  void updateCells() {
+    switch(rotation) {
+    case 0:
+      x = constrain(x, 2, 9);
+      y = constrain(y, 1, 19);
+      int index = x+y*12;
+      cells[index-1].type = JBLOCK;
+      for (int i = 0; i < 3; i++) {
+        cells[index+12 +i-1].type = JBLOCK;
+      }
+      break;
+
+    case 1:
+      x = constrain(x, 1, 9);
+      y = constrain(y, 1, 18);
+      index = x+y*12-1;
+      cells[index+2].type = JBLOCK;
+      for (int i = 0; i < 3; i++) {
+        cells[index+1 +i*12].type = JBLOCK;
       }
       break;
 
     case 2:
-      for (int i = 0; i < 4; i++) {
-        rect(x + i*size, y+ 2*size, size, size);
+      x = constrain(x, 2, 9);
+      y = constrain(y, 1, 18);
+      index = x+y*12;
+      cells[index+2+2*12-1].type = JBLOCK;
+      for (int i = 0; i < 3; i++) {
+        cells[index+i-1 +12].type = JBLOCK;
       }
       break;
 
     case 3:
-      for (int i = 0; i < 4; i++) {
-        rect(x+size, y + i*size, size, size);
+      x = constrain(x, 2, 10);
+      y = constrain(y, 1, 18);
+      index = x+y*12-1;
+      cells[index+2*12].type = JBLOCK;
+      for (int i = 0; i < 3; i++) {
+        cells[index+1 +i*12].type = JBLOCK;
       }
       break;
     }
   }
 }
-
-//class JBlock extends Block {
-
-//  JBlock(int x, int y) {
-//    super(x, y);
-//    maxRotation = 3;
-//  }
-
-//  void display() {
-//    fill(255);
-//    for (int i = 0; i < 3; i++) {
-//      for (int j = 0; j < 3; j++) {
-//        rect(x+i*size, y+j*size, size, size);
-//      }
-//    }
-//    fill(DBLUE);
-//    switch(rotation) {
-//    case 0:
-//      for (int i = 0; i < 3; i++) {
-//        rect(x+i*size, y+size, size, size);
-//      }
-//      rect(x, y, size, size);
-//      break;
-
-//    case 1:
-//      rect(x+2*size, y, size, size);
-//      for (int i = 0; i < 3; i++) {
-//        rect(x+size, y+i*size, size, size);
-//      }
-//      break;
-
-//    case 2:
-//      for (int i = 0; i < 3; i++) {
-//        rect(x+i*size, y+size, size, size);
-//      }
-//      rect(x+2*size, y+2*size, size, size);
-//      break;
-
-//    case 3:
-//      for (int i = 0; i < 3; i++) {
-//        rect(x+size, y+i*size, size, size);
-//      }
-//      rect(x, y+2*size, size, size);
-//      break;
-//    }
-//  }
-//}
 
 //class LBlock extends Block {
 
