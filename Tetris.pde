@@ -23,7 +23,6 @@ BlockType NONE = BlockType.NONE;
 color LBLUE, DBLUE, ORANGE, YELLOW, GREEN, PURPLE, RED;
 float cellSize;
 int screenHeight;
-float counter;
 
 void setup() {
   size(504, 924);
@@ -41,9 +40,9 @@ void setup() {
   GREEN = SBLOCK.c;
   PURPLE = TBLOCK.c;
   RED = ZBLOCK.c;
-  
+
   //Border Cells
-  int[] border = new int[64];
+  border = new int[64];
   for (int i = 0; i < 12; i++) {
     border[i] = i;
     border[i+52] = 252+i;
@@ -63,7 +62,7 @@ void setup() {
       int index = x+y*12;
       cells[index] = new Cell(x, y);
       for (int i : border) {
-        if (index == i) 
+        if (index == i)
           cells[index].type = BORDER;
       }
     }
@@ -84,33 +83,19 @@ void draw() {
   background(0);
   for (Cell c : cells) {
     c.type = NONE;
-    //Border Cells
-    for (int x = 0; x < 12; x++) {
-      cells[x].type = BORDER;
-      cells[x+12*screenHeight-12].type = BORDER;
-    }
-    for (int y = 0; y < 22; y++) {
-      cells[y*12].type = BORDER;
-      cells[11+y*12].type = BORDER;
-    }
-
-    Block b = blocks[0];
-    counter++;
-    if (counter > 10000) {
-      counter = 0;
-      b.y++;
-    }
-    b.update();
+  }
+  for (int i : border) cells[i].type = BORDER;
+  Block b = blocks[0];
+  if (frameCount % 30 == 0) {
+    b.y++;
+  }
+  b.update();
+  for (Cell c : cells) {
     c.display();
   }
 }
 
 void mousePressed() {
-  //for (Block b : blocks) {
-  //b.rotation++;
-  //  if (b.rotation > b.maxRotation)
-  //    b.rotation = 0;
-  //}
 }
 
 void keyPressed() {
