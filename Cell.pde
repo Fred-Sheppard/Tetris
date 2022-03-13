@@ -4,6 +4,7 @@ class Cell {
   float x, y;
   float size;
   int index;
+  boolean fixed;
 
   Cell(float x, float y, int index) {
     size = cellSize;

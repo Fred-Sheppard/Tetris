@@ -1,9 +1,10 @@
 //Maxrotation can go //<>//
 //Add rotation logic to IBLOCK
 
-Block[] blocks = new Block[7];
+//Block[] blocks = new Block[7];
 Cell[] cells;
 int[] border;
+Block currentBlock;
 
 enum BlockType {
   IBLOCK(#00F0F0), JBLOCK(#0000F0), LBLOCK(#F0A000), OBLOCK(#FFFF00),
@@ -65,44 +66,48 @@ void setup() {
       int index = x+y*12;
       cells[index] = new Cell(x, y, index);
       for (int i : border) {
-        if (index == i)
-          cells[index].type = BORDER;
+        if (index == i) {
+          Cell c = cells[index];
+          c.type = BORDER;
+          c.fixed = true;
+        }
       }
     }
   }
 
-  blocks[0] = new JBlock(6, 1);
-  //blocks[1] = new JBlock(40, 300);
+  currentBlock = new IBlock(6, 1);
+
+  //blocks[0] = new IBlock(6, 1);
+  //blocks[1] = new JBlock(6, 1);
   //blocks[2] = new LBlock(40, 450);
   //blocks[3] = new OBlock(40, 600);
   //blocks[4] = new SBlock(40, 700);
   //blocks[5] = new TBlock(300, 100);
   //blocks[6] = new ZBlock(300, 250);
 
-  blocks[0].update();
+  currentBlock.update();
 }
 
 void draw() {
   background(0);
   for (Cell c : cells) {
-    c.type = NONE;
+    if (!c.fixed) c.type = NONE;
   }
-  for (int i : border) cells[i].type = BORDER;
-  Block b = blocks[0];
+  Block b = currentBlock;
   if (frameCount % 30 == 0) {
     b.y++;
   }
   b.update();
-  //cells[b.x +b.y*12].type = OBLOCK;
   for (Cell c : cells) {
     c.display();
   }
 }
 
 void mousePressed() {
-  blocks[0].rotate();
+  currentBlock.rotate();
 }
 
 void keyPressed() {
-  println("debug");
+  currentBlock.fall();
+  currentBlock = new IBlock(6, 1);
 }

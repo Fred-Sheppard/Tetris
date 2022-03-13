@@ -3,6 +3,7 @@ class Block {
   int x, y;
   int rotation, maxRotation;
   float size;
+  boolean falling = true;
 
   Block(int x, int y) {
     this.x = x;
@@ -11,22 +12,30 @@ class Block {
   }
 
   void update() {
-    x = floor(map(mouseX, 0, width, 0, 12));
-    //x = constrain(x, 1, 10);
-    //y = constrain(y, 1, 17);
-    updateCells();
+    if (falling) {
+      x = floor(map(mouseX, 0, width, 0, 12));
+    }
+    updateCells(false);
   }
 
-  void updateCells() {
+  void updateCells(boolean fixed) {
   }
 
   void display() {
   }
 
   void rotate() {
+    if (!falling) return;
     rotation++;
     if (rotation > maxRotation)
       rotation = 0;
+  }
+
+  void fall() {
+    falling = false;
+    x = floor(map(mouseX, 0, width, 0, 12));
+    y = 21;
+    updateCells(true);
   }
 }
 
@@ -37,14 +46,17 @@ class IBlock extends Block {
     maxRotation = 1;
   }
 
-  void updateCells() {
+  void updateCells(boolean fixed) {
     switch(rotation) {
     case 0:
       x = constrain(x, 2, 8);
       y = constrain(y, 1, 19);
       int index = x+y*12;
       for (int i = 0; i < 4; i++) {
-        cells[index+11 +i].type = IBLOCK;
+        Cell c = cells[index+11 +i];
+        c.type = IBLOCK;
+        if (fixed)
+          c.fixed = true;
       }
       break;
 
@@ -53,11 +65,15 @@ class IBlock extends Block {
       y = constrain(y, 1, 17);
       index = x+y*12;
       for (int i = 0; i < 4; i++) {
-        cells[index +12*i].type = IBLOCK;
+        Cell c = cells[index +12*i];
+        c.type = IBLOCK;
+        if (fixed)
+          c.fixed = true;
       }
     }
   }
 }
+
 
 class JBlock extends Block {
 
@@ -74,7 +90,8 @@ class JBlock extends Block {
       int index = x+y*12;
       cells[index-1].type = JBLOCK;
       for (int i = 0; i < 3; i++) {
-        cells[index+12 +i-1].type = JBLOCK;
+        Cell c = cells[index+12 +i-1];
+        c.type = JBLOCK;
       }
       break;
 
